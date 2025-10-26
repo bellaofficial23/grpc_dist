@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package file_processor;
+
+message FileChunk {
+    bytes content = 1;
+    string filename = 2;
+    bool success = 3;
+    bool is_last_chunk = 4; 
+}
+
+message ResizeImageRequest {
+    int32 width = 1;
+    int32 height = 2;
+}
+
+message ImageStreamRequest {
+    oneof request_type {
+        string format = 1;
+        ResizeImageRequest metadata = 2;
+        FileChunk chunk = 3;
+    }
+}
+
+service FileProcessorService {
+    rpc CompressPDF(stream FileChunk) returns (stream FileChunk);
+    rpc ConvertToTXT(stream FileChunk) returns (stream FileChunk);
+    rpc ConvertImageFormat(stream ImageStreamRequest) returns (stream FileChunk);
+    rpc ResizeImage(stream ImageStreamRequest) returns (stream FileChunk);
+}

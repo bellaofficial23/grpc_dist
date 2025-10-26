@@ -1,8 +1,7 @@
 FROM ubuntu:latest
 
 # USER root
-RUN apt-get update && apt-get install -y cmake build-essential git
-WORKDIR /deps
+RUN apt-get update && apt-get install -y cmake build-essential git ghostscript imagemagick
 
 RUN git clone --recurse-submodules -b v1.74.0 --depth 1 --shallow-submodules https://github.com/grpc/grpc
 
